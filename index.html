@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Potti Birthday Battle ⚡</title>
+
+<style>
+body{
+  margin:0;
+  font-family:system-ui,Segoe UI,Arial;
+  background:linear-gradient(135deg,#0b1d51,#1e90ff);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+}
+
+/* CARD */
+
+.card{
+  width:420px;
+  background:#ffd84d;
+  border-radius:22px;
+  padding:4px;
+  box-shadow:0 25px 70px rgba(0,0,0,.35);
+}
+
+.inner{
+  background:#ffffff;
+  border-radius:18px;
+  padding:18px;
+  color:#0b1d51;
+}
+
+/* HEADER */
+
+.header{
+  display:flex;
+  justify-content:space-between;
+  font-weight:700;
+}
+
+.type{
+  font-size:12px;
+  background:#1e3cff;
+  color:white;
+  padding:4px 10px;
+  border-radius:999px;
+}
+
+/* HP */
+
+.hpwrap{
+  background:#ddd;
+  border-radius:999px;
+  height:14px;
+  margin:10px 0;
+  overflow:hidden;
+}
+
+.hpbar{
+  background:linear-gradient(90deg,#00e676,#aeea00);
+  height:100%;
+  width:100%;
+  border-radius:999px;
+  transition:.5s;
+}
+
+/* TEXT */
+
+#qcount{font-size:12px;opacity:.8}
+#question{font-size:18px;font-weight:700;margin-bottom:10px}
+#msg{margin-top:8px;font-weight:600;color:#1e3cff}
+#attack{font-size:13px;font-weight:700;height:18px}
+
+/* BUTTONS */
+
+button{
+  width:100%;
+  margin:7px 0;
+  padding:12px;
+  border-radius:14px;
+  border:none;
+  background:#eef2ff;
+  cursor:pointer;
+  font-weight:600;
+}
+
+.correctGlow{ background:#c8ffd1 !important; }
+
+#nextBtn{
+  display:none;
+  background:#1e3cff;
+  color:white;
+}
+
+/* MUSIC */
+
+.music-box{
+  position:fixed;
+  top:18px;
+  right:18px;
+  background:white;
+  padding:12px;
+  border-radius:16px;
+  box-shadow:0 12px 30px rgba(0,0,0,.2);
+  width:220px;
+}
+
+.music-note{
+  font-size:12px;
+  margin-bottom:6px;
+  color:#1e3cff;
+  font-weight:600;
+}
+
+.music-row{
+  display:flex;
+  gap:10px;
+  align-items:center;
+}
+
+.music-play{
+  width:36px;
+  height:36px;
+  border-radius:50%;
+  border:none;
+  background:#1e3cff;
+  color:white;
+}
+
+/* FINAL IMAGE */
+
+.final-photo{
+  width:100%;
+  border-radius:14px;
+  margin-bottom:12px;
+}
+
+/* PARTICLES */
+
+.magic{
+  position:fixed;
+  width:6px;
+  height:6px;
+  background:white;
+  border-radius:50%;
+  opacity:.9;
+}
+
+/* SAKURA */
+
+.petal{
+  position:fixed;
+  top:-20px;
+  font-size:18px;
+  animation:petalFall linear forwards;
+}
+
+@keyframes petalFall{
+  to{
+    transform:translateY(110vh) rotate(360deg);
+    opacity:.6;
+  }
+}
+
+/* BUBBLES */
+
+.bubble{
+  position:fixed;
+  bottom:-40px;
+  width:16px;
+  height:16px;
+  border-radius:50%;
+  background:rgba(255,255,255,.5);
+  backdrop-filter:blur(2px);
+  animation:bubbleUp linear forwards;
+}
+
+@keyframes bubbleUp{
+  to{
+    transform:translateY(-120vh);
+    opacity:0;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<audio id="bgm" loop>
+  <source src="daydreamin.mp3" type="audio/mpeg">
+</audio>
+
+<div class="music-box">
+  <div class="music-note">💙 press this to make your birthday better</div>
+  <div class="music-row">
+    <button onclick="toggleMusic()" id="musicBtn">▶</button>
+    <input type="range" min="0" max="1" step="0.01"
+           value="0.35" oninput="bgm.volume=this.value">
+  </div>
+</div>
+
+<div class="card">
+<div class="inner">
+
+<div class="header">
+<div>Potti Birthday Mode</div>
+<div class="type">Lazy Pokimon 😴⚡</div>
+</div>
+
+<div id="qcount"></div>
+
+<div>HP 💙</div>
+<div class="hpwrap"><div id="hp" class="hpbar"></div></div>
+
+<div id="question"></div>
+<div id="answers"></div>
+<div id="attack"></div>
+<div id="msg"></div>
+
+<button id="nextBtn" onclick="next()">Next Move ⚡</button>
+
+</div>
+</div>
+
+<script>
+
+const quiz = [
+
+{
+q:"Trainer check — Is today the birthday of the most beautiful girl?",
+answers:[
+{text:"Yes",msg:"Energy Saripoled",correct:false},
+{text:"Ofcourse yes",msg:"Gattiga",correct:false},
+{text:"Yesss",msg:"Inkonchem",correct:false},
+{text:"Duhhh yesss",msg:"WOOOOOOOO",correct:true}
+]},
+
+{
+q:"What is my favorite thing about you?",
+answers:[
+{text:"Your big forehead",msg:"I Love that 😌",correct:false},
+{text:"Your singing",msg:"I’ll cry 😭",correct:false},
+{text:"Your tiny hands",msg:"Love them too 💙",correct:false},
+{text:"EYES CHICO",msg:"Rojukosari chachipovach vaatikosam",correct:true}
+]},
+
+{
+q:"What is the most beautiful thing in the world?",
+answers:[
+{text:"Siri’s eyes",msg:"Correct 💙",correct:true},
+{text:"Siri eyes",msg:"Still correct 😌",correct:false},
+{text:"Siri eyes",msg:"Still correct 😌",correct:false},
+{text:"Siri eyes",msg:"Still correct 😌",correct:false}
+]},
+
+{
+q:"What am I jealous of?",
+answers:[
+{text:"Warangal",msg:"A little bit 😒",correct:false},
+{text:"God",msg:"I am god myself 😂",correct:false},
+{text:"Sunlight",msg:"Falls on you everyday ☀️",correct:false},
+{text:"Your bed",msg:"Yeappppppppppp 😤💙",correct:true}
+]}
+
+];
+
+let i = 0;
+
+function showQuestion(){
+
+if(i >= quiz.length){
+document.querySelector(".inner").innerHTML = `
+<img src="jake-amy.jpg" class="final-photo">
+<h2>🌸 Birthday Level Cleared 🌸</h2>
+<p>
+Happy Birthday Potti 💙<br>
+Best human being I have ever met<br>
+Hope this year brings you love & light<br>
+— Yours Pathithu
+</p>
+<button onclick="finalAttack()">FINAL BLOOM 🌸</button>`;
+sakuraFall();
+bubbleRise();
+return;
+}
+
+qcount.innerText = "Battle " + (i+1) + " / " + quiz.length;
+question.innerText = quiz[i].q;
+answers.innerHTML = "";
+msg.innerText = "";
+attack.innerText = "";
+nextBtn.style.display = "none";
+
+quiz[i].answers.forEach(a=>{
+  let b = document.createElement("button");
+  b.innerText = "⚡ " + a.text;
+  b.onclick = ()=> choose(a,b);
+  answers.appendChild(b);
+});
+
+hp.style.width = (100 - (i*(100/quiz.length))) + "%";
+}
+
+function choose(a,btn){
+attack.innerText = "⚡ Cute Attack!";
+msg.innerText = a.msg;
+if(a.correct){
+  btn.classList.add("correctGlow");
+  nextBtn.style.display = "block";
+}
+}
+
+function next(){ i++; showQuestion(); }
+
+function toggleMusic(){
+if(bgm.paused){
+  bgm.volume=.35;
+  bgm.play();
+  musicBtn.innerText="⏸";
+} else {
+  bgm.pause();
+  musicBtn.innerText="▶";
+}
+}
+
+/* EFFECTS */
+
+function sakuraFall(){
+for(let i=0;i<40;i++){
+  let p=document.createElement("div");
+  p.className="petal";
+  p.innerText="🌸";
+  p.style.left=Math.random()*100+"vw";
+  p.style.animationDuration=(4+Math.random()*3)+"s";
+  document.body.appendChild(p);
+  setTimeout(()=>p.remove(),7000);
+}
+}
+
+function bubbleRise(){
+for(let i=0;i<35;i++){
+  let b=document.createElement("div");
+  b.className="bubble";
+  b.style.left=Math.random()*100+"vw";
+  b.style.animationDuration=(5+Math.random()*3)+"s";
+  document.body.appendChild(b);
+  setTimeout(()=>b.remove(),8000);
+}
+}
+
+function finalAttack(){
+bgm.play();
+sakuraFall();
+bubbleRise();
+}
+
+showQuestion();
+
+</script>
+</body>
+</html>
+
