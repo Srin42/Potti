@@ -351,9 +351,12 @@ hp.style.width = (100 - (i*(100/quiz.length))) + "%";
 function choose(a,btn){
 attack.innerText = "⚡ Cute Attack!";
 msg.innerText = a.msg;
+
 if(a.correct){
   btn.classList.add("correctGlow");
-  nextBtn.style.display = "block";
+}
+
+nextBtn.style.display = "block";
 }
 }
 
@@ -406,4 +409,5 @@ showQuestion();
 </script>
 </body>
 </html>
+
 
